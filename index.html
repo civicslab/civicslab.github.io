@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Civic Lab — Laboratorium Digital Pendidikan Pancasila</title>
+<style>
+:root{
+  --bg:#07111f; --panel:#0d1b2a; --panel2:#11263a; --text:#eef6ff;
+  --muted:#9fb2c7; --accent:#5eead4; --accent2:#60a5fa; --gold:#fbbf24;
+  --danger:#fb7185; --border:rgba(255,255,255,.10);
+  --shadow:0 20px 60px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+ margin:0; font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+ background:
+ radial-gradient(circle at 10% 10%,rgba(96,165,250,.14),transparent 28%),
+ radial-gradient(circle at 90% 15%,rgba(94,234,212,.10),transparent 25%),
+ var(--bg); color:var(--text); min-height:100vh;
+}
+button{font:inherit}
+.container{width:min(1120px,92%);margin:auto}
+header{
+ position:sticky;top:0;z-index:20;background:rgba(7,17,31,.78);
+ backdrop-filter:blur(18px);border-bottom:1px solid var(--border)
+}
+.nav{height:72px;display:flex;align-items:center;justify-content:space-between}
+.brand{display:flex;gap:12px;align-items:center;font-weight:900;letter-spacing:.08em}
+.logo{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;
+ background:linear-gradient(135deg,var(--accent),var(--accent2));color:#06111d;font-weight:1000}
+.navlinks{display:flex;gap:8px}
+.navlinks button,.ghost{
+ border:0;background:transparent;color:var(--muted);padding:9px 12px;border-radius:10px;cursor:pointer
+}
+.navlinks button:hover,.ghost:hover{background:rgba(255,255,255,.06);color:#fff}
+.hero{padding:90px 0 55px;display:grid;grid-template-columns:1.15fr .85fr;gap:55px;align-items:center}
+.kicker{color:var(--accent);font-size:.78rem;font-weight:900;letter-spacing:.2em}
+h1{font-size:clamp(3rem,7vw,6rem);line-height:.9;margin:16px 0;letter-spacing:-.07em}
+.hero p{font-size:1.15rem;line-height:1.75;color:var(--muted);max-width:680px}
+.cta{
+ display:inline-flex;align-items:center;gap:10px;border:0;border-radius:14px;padding:15px 20px;
+ background:linear-gradient(135deg,var(--accent),var(--accent2));color:#06111d;font-weight:900;cursor:pointer;
+ box-shadow:0 12px 35px rgba(94,234,212,.15)
+}
+.cta:hover{transform:translateY(-1px)}
+.hero-card,.panel,.mission-card{
+ background:linear-gradient(145deg,rgba(17,38,58,.92),rgba(13,27,42,.92));
+ border:1px solid var(--border);border-radius:24px;box-shadow:var(--shadow)
+}
+.hero-card{padding:26px}
+.mini-label{color:var(--muted);font-size:.72rem;letter-spacing:.16em;font-weight:800}
+.signal{height:180px;margin:20px 0;border-radius:18px;display:flex;align-items:end;padding:18px;
+ background:linear-gradient(160deg,rgba(96,165,250,.18),rgba(94,234,212,.05)),
+ repeating-linear-gradient(90deg,transparent 0 38px,rgba(255,255,255,.035) 39px 40px)}
+.signal-bars{display:flex;gap:10px;align-items:end;width:100%;height:100%}
+.bar{flex:1;border-radius:8px 8px 3px 3px;background:linear-gradient(to top,var(--accent2),var(--accent));opacity:.85}
+.section{padding:65px 0}
+.section-title{display:flex;justify-content:space-between;align-items:end;gap:20px;margin-bottom:25px}
+h2{font-size:2.2rem;margin:5px 0}
+.muted{color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.card{padding:22px;border:1px solid var(--border);border-radius:18px;background:rgba(255,255,255,.025)}
+.card .num{color:var(--accent);font-weight:900;font-size:.78rem}
+.card h3{margin:9px 0}
+.card p{color:var(--muted);line-height:1.65}
+#mission{scroll-margin-top:85px}
+.mission-wrap{padding:28px}
+.progress{height:7px;background:rgba(255,255,255,.08);border-radius:10px;overflow:hidden;margin:20px 0 30px}
+.progress > div{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:.4s}
+.mission-head{display:flex;justify-content:space-between;gap:20px;align-items:start}
+.badge{padding:7px 10px;border-radius:999px;background:rgba(94,234,212,.09);color:var(--accent);font-size:.72rem;font-weight:900}
+.scenario{font-size:1.05rem;line-height:1.85;color:#dbeafe;margin:20px 0}
+.choice-grid{display:grid;gap:12px}
+.choice{
+ width:100%;text-align:left;padding:18px;border-radius:15px;border:1px solid var(--border);
+ background:rgba(255,255,255,.025);color:var(--text);cursor:pointer;transition:.2s
+}
+.choice:hover{border-color:rgba(94,234,212,.5);background:rgba(94,234,212,.06);transform:translateX(3px)}
+.choice strong{color:var(--accent);margin-right:8px}
+.consequence{margin-top:22px;padding:20px;border-left:3px solid var(--gold);background:rgba(251,191,36,.06);border-radius:12px;line-height:1.75}
+.next{margin-top:18px;display:flex;justify-content:flex-end}
+.hidden{display:none!important}
+.reflection{display:grid;gap:14px}
+textarea,input{
+ width:100%;background:#081522;color:var(--text);border:1px solid var(--border);border-radius:13px;padding:14px;outline:none
+}
+textarea{min-height:130px;resize:vertical}
+textarea:focus,input:focus{border-color:rgba(94,234,212,.6)}
+.result{
+ text-align:center;padding:35px;border-radius:18px;background:rgba(94,234,212,.055);border:1px solid rgba(94,234,212,.15)
+}
+.result .big{font-size:3rem;font-weight:1000;color:var(--accent)}
+footer{padding:45px 0;color:var(--muted);border-top:1px solid var(--border);margin-top:50px}
+.small{font-size:.85rem}
+@media(max-width:800px){
+ .hero{grid-template-columns:1fr;padding-top:55px}.grid{grid-template-columns:1fr}
+ .navlinks{display:none}.hero-card{margin-top:5px}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="container nav">
+    <div class="brand"><div class="logo">CL</div><span>CIVIC LAB</span></div>
+    <nav class="navlinks">
+      <button onclick="scrollToId('home')">Home</button>
+      <button onclick="scrollToId('mission')">Mission</button>
+      <button onclick="scrollToId('about')">Tentang</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+<section class="container hero" id="home">
+  <div>
+    <div class="kicker">LABORATORIUM DIGITAL PENDIDIKAN PANCASILA</div>
+    <h1>Belajar.<br>Memilih.<br>Merefleksi.</h1>
+    <p>
+      Civic Lab adalah ruang belajar interaktif tempat kamu menghadapi persoalan,
+      mengambil keputusan, melihat konsekuensinya, lalu merefleksikan nilai Pancasila
+      yang kamu gunakan.
+    </p>
+    <button class="cta" onclick="startMission()">MULAI CIVIC MISSION <span>→</span></button>
+  </div>
+  <div class="hero-card">
+    <div class="mini-label">MISSION 01 / ACTIVE SIMULATION</div>
+    <div class="signal">
+      <div class="signal-bars">
+        <div class="bar" style="height:35%"></div>
+        <div class="bar" style="height:55%"></div>
+        <div class="bar" style="height:45%"></div>
+        <div class="bar" style="height:78%"></div>
+        <div class="bar" style="height:62%"></div>
+        <div class="bar" style="height:90%"></div>
+      </div>
+    </div>
+    <strong>Konflik di Sekolah</strong>
+    <p class="muted small">Keberagaman · Toleransi · Tanggung jawab digital</p>
+  </div>
+</section>
+
+<section class="section" id="about">
+<div class="container">
+ <div class="section-title">
+   <div><div class="kicker">CIVIC LAB / 01</div><h2>Belajar sebagai warga.</h2></div>
+   <div class="muted small">Versi prototipe V1</div>
+ </div>
+ <div class="grid">
+   <div class="card"><div class="num">01 — EXPERIENCE</div><h3>Hadapi kasus</h3><p>Masalah dirancang dekat dengan kehidupan peserta didik, bukan sekadar soal hafalan.</p></div>
+   <div class="card"><div class="num">02 — DECISION</div><h3>Ambil keputusan</h3><p>Setiap pilihan membawa konsekuensi yang membuat peserta didik berpikir sebelum bertindak.</p></div>
+   <div class="card"><div class="num">03 — REFLECTION</div><h3>Refleksikan</h3><p>Peserta didik menghubungkan keputusan dengan nilai Pancasila dan pengalaman belajarnya.</p></div>
+ </div>
+</div>
+</section>
+
+<section class="section" id="mission">
+<div class="container">
+ <div class="panel mission-wrap">
+  <div class="mission-head">
+    <div>
+      <div class="kicker">CIVIC MISSION 01</div>
+      <h2>Konflik di Sekolah</h2>
+      <p class="muted">Misi: menjaga harmoni dalam keberagaman.</p>
+    </div>
+    <div class="badge" id="stageBadge">STAGE 01 / 03</div>
+  </div>
+  <div class="progress"><div id="progressBar"></div></div>
+
+  <div id="missionContent"></div>
+ </div>
+</div>
+</section>
+</main>
+
+<footer>
+<div class="container">
+ <strong>CIVIC LAB</strong> — Laboratorium Digital Pendidikan Pancasila
+ <div class="small" style="margin-top:8px">Prototipe pembelajaran interaktif · V1</div>
+</div>
+</footer>
+
+<script>
+const state = {
+  stage: 0,
+  decisions: [],
+  points: 0,
+  reflection: ""
+};
+
+const stages = [
+{
+ title:"Situasi 1 — Unggahan yang Memanas",
+ text:"Kamu melihat temanmu mengunggah komentar yang menyudutkan kelompok lain karena perbedaan budaya. Dalam beberapa menit, komentar itu mulai mendapat respons dari murid lain.",
+ question:"Apa yang akan kamu lakukan?",
+ choices:[
+  {label:"A",text:"Membalas komentar tersebut dengan keras.", points:0,
+   consequence:"Responsmu membuat percakapan semakin panas. Temanmu merasa diserang dan membalas dengan komentar baru."},
+  {label:"B",text:"Membiarkannya karena itu bukan urusanmu.", points:1,
+   consequence:"Kamu memilih tidak terlibat. Namun, komentar terus menyebar dan beberapa murid mulai ikut memperkeruh keadaan."},
+  {label:"C",text:"Mengajak teman tersebut berdiskusi dan mengingatkan dampaknya.", points:3,
+   consequence:"Temanmu bersedia berdiskusi. Ia mulai memahami bahwa komentarnya dapat melukai kelompok lain, tetapi unggahan itu sudah terlanjur menyebar."},
+  {label:"D",text:"Membagikan unggahan tersebut agar menjadi perhatian banyak orang.", points:0,
+   consequence:"Unggahan menjadi semakin luas. Perhatian memang meningkat, tetapi konflik juga semakin sulit dikendalikan."}
+ ]
+},
+{
+ title:"Situasi 2 — Konflik Menyebar",
+ text:"Unggahan tersebut sudah tersebar di grup kelas. Beberapa murid mulai saling menyalahkan. Ada yang meminta kamu membalas agar kelompokmu tidak dianggap lemah.",
+ question:"Apa langkah berikutnya?",
+ choices:[
+  {label:"A",text:"Mengajak semua pihak menghentikan komentar sementara dan membicarakan masalah secara langsung.", points:3,
+   consequence:"Percakapan mulai lebih tenang. Setiap pihak mendapat kesempatan menjelaskan sudut pandangnya tanpa saling menyerang."},
+  {label:"B",text:"Membalas agar kelompokmu terlihat membela diri.", points:0,
+   consequence:"Kelompok lain merasa semakin diserang. Konflik melebar dan semakin banyak murid ikut berpihak."},
+  {label:"C",text:"Keluar dari grup dan tidak mau tahu lagi.", points:1,
+   consequence:"Kamu terhindar dari konflik secara langsung, tetapi masalah tetap berlangsung tanpa ada upaya penyelesaian."},
+  {label:"D",text:"Meminta satu pihak mengalah supaya masalah cepat selesai.", points:1,
+   consequence:"Masalah tampak berhenti, tetapi pihak yang diminta mengalah merasa tidak didengar dan menyimpan keberatan."}
+ ]
+},
+{
+ title:"Situasi 3 — Mencari Jalan Tengah",
+ text:"Setelah diskusi, kedua kelompok sepakat bahwa perbedaan pendapat bukan alasan untuk saling merendahkan. Namun, mereka masih berbeda pendapat tentang aturan komunikasi di grup kelas.",
+ question:"Keputusan apa yang paling kamu dorong?",
+ choices:[
+  {label:"A",text:"Membuat kesepakatan bersama tentang etika berkomunikasi dan cara menyelesaikan konflik.", points:3,
+   consequence:"Kelas memiliki kesepakatan yang dibuat bersama. Semua pihak memahami bahwa kebebasan berpendapat perlu disertai tanggung jawab."},
+  {label:"B",text:"Menyerahkan aturan sepenuhnya kepada ketua kelas.", points:1,
+   consequence:"Aturan menjadi lebih cepat dibuat, tetapi sebagian murid merasa tidak dilibatkan dalam prosesnya."},
+  {label:"C",text:"Melarang semua perdebatan di grup kelas.", points:0,
+   consequence:"Konflik memang berkurang di grup, tetapi ruang untuk menyampaikan pendapat secara sehat juga ikut hilang."},
+  {label:"D",text:"Membiarkan setiap orang berkomunikasi sesukanya.", points:0,
+   consequence:"Tidak ada kesepakatan yang jelas. Potensi konflik serupa masih sangat besar untuk terulang."}
+ ]
+}
+];
+
+function scrollToId(id){document.getElementById(id).scrollIntoView({behavior:"smooth"})}
+
+function startMission(){
+  state.stage=0; state.decisions=[]; state.points=0; state.reflection="";
+  renderStage();
+  scrollToId("mission");
+}
+
+function renderStage(){
+ const s=stages[state.stage];
+ document.getElementById("stageBadge").textContent=`STAGE ${String(state.stage+1).padStart(2,"0")} / 03`;
+ document.getElementById("progressBar").style.width=((state.stage)/3*100)+"%";
+ document.getElementById("missionContent").innerHTML=`
+   <div class="scenario"><strong>${s.title}</strong><br>${s.text}</div>
+   <h3>${s.question}</h3>
+   <div class="choice-grid">
+     ${s.choices.map((c,i)=>`
+       <button class="choice" onclick="choose(${i})">
+         <strong>${c.label}</strong>${c.text}
+       </button>`).join("")}
+   </div>
+ `;
+}
+
+function choose(index){
+ const s=stages[state.stage], c=s.choices[index];
+ state.decisions.push({stage:state.stage+1,choice:c.label,text:c.text});
+ state.points += c.points;
+ document.getElementById("missionContent").innerHTML=`
+   <div class="scenario"><strong>Keputusanmu</strong><br>${c.label}. ${c.text}</div>
+   <div class="consequence"><strong>KONSEKUENSI</strong><br>${c.consequence}</div>
+   <div class="next">
+     <button class="cta" onclick="${state.stage<2 ? "nextStage()" : "showReflection()"}">
+       ${state.stage<2 ? "LANJUTKAN MISI →" : "SELESAIKAN MISI →"}
+     </button>
+   </div>
+ `;
+ document.getElementById("progressBar").style.width=((state.stage+1)/3*100)+"%";
+}
+
+function nextStage(){state.stage++;renderStage();}
+
+function showReflection(){
+ document.getElementById("stageBadge").textContent="REFLECTION";
+ document.getElementById("progressBar").style.width="100%";
+ document.getElementById("missionContent").innerHTML=`
+   <div class="reflection">
+    <div class="scenario">
+      <strong>Misi selesai.</strong><br>
+      Tidak ada satu keputusan yang otomatis membuatmu menjadi “paling benar”.
+      Yang penting adalah kemampuanmu mempertimbangkan dampak, menghargai orang lain,
+      dan bertanggung jawab atas pilihanmu.
+    </div>
+    <label><strong>Apa keputusanmu yang paling penting dalam misi ini?</strong></label>
+    <textarea id="r1" placeholder="Tuliskan keputusan yang paling kamu ingat..."></textarea>
+    <label><strong>Nilai Pancasila apa yang kamu gunakan?</strong></label>
+    <textarea id="r2" placeholder="Contoh: persatuan, kemanusiaan, musyawarah..."></textarea>
+    <label><strong>Setelah melihat konsekuensi pilihanmu, apakah pandanganmu berubah?</strong></label>
+    <textarea id="r3" placeholder="Jelaskan secara singkat..."></textarea>
+    <div class="next"><button class="cta" onclick="finishMission()">KIRIM REFLEKSI →</button></div>
+   </div>
+ `;
+}
+
+function finishMission(){
+ const r1=document.getElementById("r1").value.trim();
+ const r2=document.getElementById("r2").value.trim();
+ const r3=document.getElementById("r3").value.trim();
+ if(!r1||!r2||!r3){alert("Lengkapi ketiga refleksi terlebih dahulu.");return}
+ state.reflection={decision:r1,value:r2,change:r3};
+ const level=state.points>=8?"CIVIC THINKER":state.points>=5?"CIVIC EXPLORER":"CIVIC OBSERVER";
+ document.getElementById("stageBadge").textContent="MISSION COMPLETE";
+ document.getElementById("missionContent").innerHTML=`
+   <div class="result">
+     <div class="mini-label">HASIL MISI</div>
+     <div class="big">${state.points}/9</div>
+     <h2>${level}</h2>
+     <p class="muted">Kamu telah menyelesaikan Civic Mission 01 dan merefleksikan keputusanmu.</p>
+     <div class="card" style="text-align:left;margin-top:22px">
+       <strong>Catatan refleksimu</strong>
+       <p><b>Keputusan:</b> ${escapeHTML(r1)}</p>
+       <p><b>Nilai Pancasila:</b> ${escapeHTML(r2)}</p>
+       <p><b>Perubahan pandangan:</b> ${escapeHTML(r3)}</p>
+     </div>
+     <button class="cta" style="margin-top:20px" onclick="startMission()">ULANGI MISI ↻</button>
+   </div>
+ `;
+}
+
+function escapeHTML(str){
+ return str.replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
+}
+
+renderStage();
+</script>
+</body>
+</html>
